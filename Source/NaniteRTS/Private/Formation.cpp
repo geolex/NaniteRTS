@@ -25,7 +25,7 @@ TArray<FVector> AFormation::SquareFormation(int nbPos, FVector startPos, FVector
 	float frontWidth = UE::Geometry::Distance(endPos, startPos);
 
 	FVector side = (endPos - startPos).GetSafeNormal();
-	FVector rear = FVector(side.Y, side.X, 0);
+	FVector rear = FVector(side.Y, -side.X, 0);
 	
 	int nbFrontPos = ceil(frontWidth / spacing);
 
