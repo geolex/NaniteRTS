@@ -16,10 +16,10 @@ public:
 	AFormation();
 
 	UFUNCTION(BlueprintCallable)
-	TArray<FVector> SquareFormation(int nbPos, FVector startPos, FVector endPos, float spacing);
+	TArray<FVector> SquareFormation(int nbPos, const FVector& startPos, const FVector& endPos, float spacing);
 
 	UFUNCTION(BlueprintCallable)
-	TArray<FVector> HollowSquareFormation(int nbPos, FVector startPos, FVector endPos, float spacing, int wallThickness);
+	TArray<FVector> HollowSquareFormation(int nbPos, const FVector& startPos, const FVector& endPos, float spacing, int wallThickness);
 
 protected:
 	// Called when the game starts or when spawned
