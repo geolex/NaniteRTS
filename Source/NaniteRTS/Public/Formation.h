@@ -18,6 +18,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<FVector> SquareFormation(int nbPos, FVector startPos, FVector endPos, float spacing);
 
+	UFUNCTION(BlueprintCallable)
+	TArray<FVector> HollowSquareFormation(int nbPos, FVector startPos, FVector endPos, float spacing, int wallThickness);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -44,6 +44,52 @@ TArray<FVector> AFormation::SquareFormation(int nbPos, FVector startPos, FVector
 	return positions;
 }
 
+TArray<FVector> AFormation::HollowSquareFormation(int nbPos, FVector startPos, FVector endPos, float spacing, int wallThickness)
+{
+	float frontWidth = UE::Geometry::Distance(endPos, startPos);
+
+	FVector side = (endPos - startPos).GetSafeNormal();
+	FVector rear = FVector(side.Y, -side.X, 0);
+	
+	int nbFrontPos = ceil(frontWidth / spacing);
+
+	int nbRanks = ceil((nbPos - (frontWidth * 2 * wallThickness)) / (2 * wallThickness));
+	
+	TArray<FVector> positions;
+	positions.Reserve(nbPos);
+
+	int posCount = 0;
+	for(int rank = 0; rank < nbRanks; rank++)
+	{
+		if(rank < wallThickness || rank >= nbRanks - wallThickness)
+		{
+			for(int column = 0; column < nbFrontPos; column++)
+			{
+				if(posCount == nbPos)
+					return positions;
+				
+				positions.Add((rear * rank + side * column) * spacing);
+				posCount++;
+			}
+		}else
+		{
+			for(int column = 0; column < wallThickness; column++)
+			{
+				positions.Add((rear * rank + side * column) * spacing);
+				posCount++;
+			}
+
+			for(int column = nbFrontPos - 1 - wallThickness; column < nbFrontPos; column++)
+			{
+				positions.Add((rear * rank + side * column) * spacing);
+				posCount++;
+			}
+		}
+	}
+	
+	return positions;
+}
+
 
 // Called every frame
 void AFormation::Tick(float DeltaTime)
