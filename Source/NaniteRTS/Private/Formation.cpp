@@ -5,22 +5,7 @@
 
 #include "VectorTypes.h"
 
-// Sets default values
-AFormation::AFormation()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-}
-
-// Called when the game starts or when spawned
-void AFormation::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-TArray<FVector> AFormation::SquareFormation(int nbPos, const FVector& startPos, const FVector& endPos, float spacing)
+TArray<FVector> UFormationHelper::SquareFormation(int nbPos, const FVector& startPos, const FVector& endPos, float spacing)
 {
 	float frontWidth = FVector::Distance(endPos, startPos);
 
@@ -44,7 +29,7 @@ TArray<FVector> AFormation::SquareFormation(int nbPos, const FVector& startPos, 
 	return positions;
 }
 
-TArray<FVector> AFormation::HollowSquareFormation(int nbPos, const FVector& startPos, const FVector& endPos, float spacing, int wallThickness)
+TArray<FVector> UFormationHelper::HollowSquareFormation(int nbPos, const FVector& startPos, const FVector& endPos, float spacing, int wallThickness)
 {
 	float frontWidth = FVector::Distance(endPos, startPos);
 
@@ -53,7 +38,7 @@ TArray<FVector> AFormation::HollowSquareFormation(int nbPos, const FVector& star
 	
 	int nbFrontPos = ceil(frontWidth / spacing);
 
-	int nbRanks = ceil((nbPos - (nbFrontPos * 2 * wallThickness)) / (2 * wallThickness));
+	int nbRanks = floor((nbPos - (nbFrontPos * 2 * wallThickness)) / (2 * wallThickness));
 	
 	TArray<FVector> positions;
 	positions.Reserve(nbPos);
@@ -61,7 +46,7 @@ TArray<FVector> AFormation::HollowSquareFormation(int nbPos, const FVector& star
 	int posCount = 0;
 	for(int rank = 0; rank < nbRanks + 2 * wallThickness; rank++)
 	{
-		if(rank < wallThickness || rank >= nbRanks - wallThickness)
+		if(rank < wallThickness || rank >= nbRanks + wallThickness)
 		{
 			for(int column = 0; column < nbFrontPos; column++)
 			{
@@ -89,12 +74,3 @@ TArray<FVector> AFormation::HollowSquareFormation(int nbPos, const FVector& star
 	
 	return positions;
 }
-
-
-// Called every frame
-void AFormation::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
